@@ -13,7 +13,7 @@ import clsx from "clsx"
   return (
     <div className='w-full flex flex-col gap-1'>
         {label &&
-            <label htmlFor={name} className='text-slate-800'></label> }
+            <label htmlFor={name} className='text-slate-800 py-1'>{label}</label> }
 
        <div>
         <input type={type}

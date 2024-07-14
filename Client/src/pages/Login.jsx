@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import {useForm} from "react-hook-form"
 import { useNavigate } from 'react-router-dom';
 import  Textbox from '../components/Textbox';
+import Button from '../components/Button';
 
 
 const Login = () => {
@@ -50,25 +51,46 @@ const Login = () => {
              className='form-container w-full md:w-[400px] flex flex-col gap-y-8 bg-white px-10 pt-14 pb-14'
             >
 
-              <div className=''>
+              <div>
                 <p className='text-blue-600 text-3xl font-bold text-center'>Welcome back!</p>
-                <span className='text-center text-base text-gray-700'>Keep all your credential safe.</span>
+                <span className='text-center text-base text-gray-700 flex items-center justify-center'>Keep all your credential safe.</span>
               </div>
 
-              <div>
+              <div className='flex flex-col gap-y-5'>
                 <Textbox 
                 type="email"
                 name="email"
-                label="Email Address"
+                label="Email"
                  placeholder="email@example.com"
-                 className="w-full rounded"
+                 className="w-full rounded-full"
                  register={register("email",{
                   required: "Email Address is required!"
                  })}
 
                  error={errors.email ? errors.email.message : ""}
                 />
+                <Textbox 
+                type="password"
+                name="password"
+                label="Password"
+                 placeholder="your password"
+                 className="w-full rounded-full"
+                 register={register("password",{
+                  required: "Password is required!"
+                 })}
+
+                 error={errors.password ? errors.password.message : ""}
+                />
+
+                <span className='text-sm text-gray-500 hover:text-blue-600
+                  hover:underline cursor-pointer'>Forgot Password ?</span>
               </div>
+
+                <Button
+                 type='submit'
+                 label='Submit'
+                 className="w-full h-10 bg-blue-700 text-white rounded-full"
+                />
                
             </form>
          </div>
