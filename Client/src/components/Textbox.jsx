@@ -24,7 +24,7 @@ import clsx from "clsx"
           className={clsx(
             "bg-transparent px-3 py-2.5 2xl:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 outline-none text-base focus:ring-2 ring-blue-300"
             ,className)}
-          aria-invalid={error ? "true" : "false"}  //if true,it tells users that the input value does not meet the required validation criteria.like form validation
+          aria-invalid={error ? "true" : "false"}  //if true,it tells users that the input value does not meet the required validation criteria.
         />
        </div>
        {error && (
