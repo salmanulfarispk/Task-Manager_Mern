@@ -3,12 +3,15 @@ import {useForm} from "react-hook-form"
 import { useNavigate } from 'react-router-dom';
 import  Textbox from '../components/Textbox';
 import Button from '../components/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCredentials } from '../redux/slices/authSlice';
 
 
 const Login = () => {
 
     const {register,handleSubmit, formState:{ errors }}=useForm();
-     const user=""
+     const {user}=useSelector((state)=> state.auth)
+     const dispatch=useDispatch()
     const navigate=useNavigate()
 
   const SubmitHandler=(data)=>{
@@ -16,7 +19,14 @@ const Login = () => {
   }
     useEffect(()=>{
       user && navigate("/dashboard")
-    },[user])
+    },[user,dispatch])
+   
+     dispatch(setCredentials({         //dummy, needed to remove
+      id: 1,
+      username: 'salman',
+      email: 'slamnpk@gmail.com'
+     }))
+    console.log("user",user);
 
   return (
     <div className='w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-primary'>
