@@ -4,6 +4,7 @@ import { IoMenu } from "react-icons/io5";
 import { setOpenSidebar } from '../redux/slices/authSlice';
 import { MdOutlineSearch } from "react-icons/md";
 import UserAvatar from "./UserAvatar"
+import NotificationPanel from './NotificationPanel';
 
 const Navbar = () => {
 
@@ -35,6 +36,7 @@ const Navbar = () => {
 
           <div className='flex gap-2 items-center'>
             
+            <NotificationPanel/>
 
             <UserAvatar/>
 
