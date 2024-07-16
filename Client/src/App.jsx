@@ -48,8 +48,7 @@ function Layout() {
     //The replace prop, when set to true, changes the navigation behavior. This means the user won't be able to navigate back to the previous page using the back button after being redirected to /log-in.
   )
 
-
-}
+};
 
 
 
@@ -112,8 +111,7 @@ function App() {
 
       <Routes>
 
-        <Route element={<Layout />}>
-
+          <Route element={<Layout />}>
           <Route index path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/tasks" element={<Tasks />} />
@@ -123,10 +121,9 @@ function App() {
           <Route path="/team" element={<Users />} />
           <Route path="/trashed" element={<Trash />} />
           <Route path="/task/:id" element={<TaskDetails />} />
+          </Route>
 
-        </Route>
-
-        <Route path="/log-in" element={<Login />} />
+          <Route path="/log-in" element={<Login />} />
 
 
       </Routes>
