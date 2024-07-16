@@ -14,7 +14,7 @@ import clsx from "clsx";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import Chart from "../components/Chart";
 import UserInfo from "../components/UserInfo";
-
+import { motion } from "framer-motion";
 
 
 const TaskTable = ({ tasks }) => {
@@ -82,7 +82,17 @@ const TaskTable = ({ tasks }) => {
 
   return (
     <>
-      <div className='w-full md:w-2/3 bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
+      <motion.div className='w-full md:w-2/3 bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'
+        initial={{opacity:0, x: -100}}
+        whileInView={{opacity:1,x: 0}}
+        transition={{
+          type:"spring",
+          stiffness:120,
+          damping:10,
+          delay:.2,
+          duration: 3
+        }}
+      >
         <table className='w-full'>
           <TableHeader />
           <tbody>
@@ -91,10 +101,82 @@ const TaskTable = ({ tasks }) => {
             ))}
           </tbody>
         </table>
-      </div>
+      </motion.div>
     </>
   );
 };
+
+
+
+
+
+const UserTable = ({ users }) => {
+
+  const TableHeader = () => (
+    <thead className='border-b border-gray-300 '>
+      <tr className='text-black  text-left'>
+        <th className='py-2'>Full Name</th>
+        <th className='py-2'>Status</th>
+        <th className='py-2'>Created At</th>
+      </tr>
+    </thead>
+  );
+
+  const TableRow = ({ user }) => (
+    <tr className='border-b border-gray-200  text-gray-600 hover:bg-gray-400/10'>
+      <td className='py-2'>
+        <div className='flex items-center gap-3'>
+          <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
+            <span className='text-center'>{getInitials(user?.name)}</span>
+          </div>
+
+          <div>
+            <p> {user.name}</p>
+            <span className='text-xs text-black'>{user?.role}</span>
+          </div>
+        </div>
+      </td>
+
+      <td>
+        <p
+          className={clsx(
+            "w-fit px-3 py-1 rounded-full text-sm",
+            user?.isActive ? "bg-blue-200" : "bg-yellow-100"
+          )}
+        >
+          {user?.isActive ? "Active" : "Disabled"}
+
+        </p>
+      </td>
+      <td className='py-2 text-sm'>{moment(user?.createdAt).fromNow()}</td>
+    </tr>
+  );
+
+
+  return (
+    <motion.div className='w-full md:w-1/3 bg-white h-fit px-2 md:px-6 py-4 shadow-md rounded'
+     initial={{opacity:0,x:100}}
+     whileInView={{opacity:1,x:0}}
+     transition={{
+      type:"spring",
+      stiffness:120,
+      delay: 0.2,
+      duration: 2
+     }}
+    >
+      <table className='w-full mb-5'>
+        <TableHeader />
+        <tbody>
+          {users?.map((user, index) => (
+            <TableRow key={index + user?._id} user={user} />
+          ))}
+        </tbody>
+      </table>
+    </motion.div>
+  );
+};
+
+
 
 
 const Dashboard = () => {
@@ -134,22 +216,52 @@ const Dashboard = () => {
 
   const Cards = ({ icon, bg, label, count }) => {
     return (
-      <div className="w-full h-32 bg-white p-5 shadow-md flex items-center justify-between">
-        <div className="h-full flex flex-1 flex-col justify-between">
+      <motion.div className="w-full h-32 bg-white p-5 shadow-md flex items-center justify-between"
+      initial={{opacity:0,x: 100}}
+      animate={{opacity:1,x: 0}}
+      transition={{
+       type:"spring",
+       stiffness:160,
+       damping:10,
+       delay:0.4,
+      }}
+      >
+
+        <motion.div className="h-full flex flex-1 flex-col justify-between"
+          initial={{opacity:0,x: 100,}}
+          whileInView={{opacity:1, x:0,}}
+          transition={{
+            type:"spring",
+            stiffness:100,
+            damping:10,
+            delay:0.3,
+            duration: 0.3
+          }}
+        >
           <p className='text-base text-gray-600'>{label}</p>
           <span className='text-2xl font-semibold'>{count}</span>
           <span className='text-sm text-gray-400'>{"110 last month"}</span>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div
           className={clsx(
             "w-10 h-10 rounded-full flex items-center justify-center text-white",
             bg
           )}
+
+          initial={{opacity:0,y: -50,scale:0}}
+          whileInView={{opacity:1, y:0,scale:1}}
+          transition={{
+            type:"spring",
+            stiffness:100,
+            damping:10,
+            delay:0.2,
+            duration: 0.5
+          }}
         >
           {icon}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     )
   }
 
@@ -161,30 +273,43 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {
           stats.map(({ icon, bg, label, total }, index) => (
+
             <Cards key={index} icon={icon} bg={bg} label={label} count={total} />
+      
           ))
         }
       </div>
 
       {/**chart section */}
-      <div className="w-full bg-white my-16 p-4 rounded shadow-sm">
-        <h4 className='text-xl text-gray-600 font-semibold'>
+      <motion.div className="w-full bg-white my-16 p-4 rounded shadow-sm"
+          initial={{opacity:0,y: -100}}
+          animate={{opacity:1,y: 0}}
+          transition={{
+            type:"spring",
+            delay: 0.6,
+            damping:10,
+            stiffness:300
+          }}
+      >
+        <h4 className='text-xl text-gray-600 font-semibold mb-2'>
           Chart by Priority
         </h4>
 
         <Chart />
-      </div>
+      </motion.div>
 
-
+          
       {/**task table and userstable */}
 
       <div className="w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8">
-        <TaskTable tasks={summary.last10Task}/>
+
+         {/**left */}
+        <TaskTable tasks={summary.last10Task}/> 
+
+         {/**right */}
+          <UserTable users={summary.users}/>   
+
       </div>
-
-
-
-
     </div>
   )
 }
