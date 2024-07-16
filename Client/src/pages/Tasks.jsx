@@ -9,8 +9,9 @@ import { IoMdAdd } from 'react-icons/io';
 import Tabs from '../components/Tabs';
 import TaskTitle from '../components/TaskTitle';
 import BoardView from '../components/BoardView';
-import Table from '../components/Table';
 import { tasks } from '../assets/datas';
+import AddTask from '../components/tasks/AddTask';
+import Table from "../components/tasks/Table"
 
 
 
@@ -64,7 +65,7 @@ const Tasks = () => {
         <Tabs tabs={TABS} setSelected={setSelected}>
 
            {/**as a children */}
-           
+
           {!status && (
             <div className='w-full flex justify-between gap-4 md:gap-x-12 py-4'>
             <TaskTitle label='To Do' className={TASK_TYPE.todo}/>
