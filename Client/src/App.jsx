@@ -9,11 +9,9 @@ import { Toaster } from "sonner"
 import { useDispatch, useSelector } from "react-redux"
 import Sidebar from "./components/Sidebar"
 import Navbar from "./components/Navbar"
-import { useRef } from "react"
 import { setOpenSidebar } from "./redux/slices/authSlice"
-import { Transition } from "@headlessui/react"
-import clsx from "clsx"
 import { IoClose } from "react-icons/io5"
+import { AnimatePresence, motion } from "framer-motion"
 
 
 
@@ -30,7 +28,7 @@ function Layout() {
       </div>
 
       {/**here  Mobile  Sidebar component*/}
-          <MobileNavbar/>
+      <MobileSidebar />
 
 
       <div className="flex-1 overflow-y-auto">
@@ -55,64 +53,54 @@ function Layout() {
 
 
 
-const MobileNavbar = () => {
+const MobileSidebar = () => {
+  const { isSidebarOpen } = useSelector((state) => state.auth);
 
-  const { isSidebarOpen } = useSelector((state) => state.auth)
-  const mobileMenuRef = useRef(null)
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   const closeSidebar = () => {
-    dispatch(setOpenSidebar(false))
-  }
+    dispatch(setOpenSidebar(false));
+  };
+
 
 
   return (
     <>
-
-      <Transition
-        show={isSidebarOpen}
-        enter='transition-opacity duration-700'
-        enterFrom='opacity-x-10'
-        enterTo='opacity-x-100'
-        leave='transition-opacity duration-700'
-        leaveFrom='opacity-x-100'
-        leaveTo='opacity-x-0'
-      >
-
-        {(ref)=> (
-          <div ref={(node)=> (mobileMenuRef.current = node)}
-          className={clsx(
-            "md:hidden w-full h-full bg-black/40 transition-all duration-700 transform",
-             isSidebarOpen ? "translate-x-0" : "translate-x-full"
-          )}
-            onClick={()=> closeSidebar()}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            className="md:hidden w-full h-full bg-black/40 transition-all duration-700 transform"
+            initial={{ opacity: 0}}
+            animate={{ opacity: 1}}
+            exit={{ opacity: 0 }}
+            onClick={closeSidebar}
           >
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{x: "100%"}}
+              transition={{
+                type: "tween",
+                duration: 0.5,
+              }}
+              className="bg-white w-3/4 h-full"
+            >
+              <div className="w-full flex justify-end px-3 mt-5">
+                <button onClick={closeSidebar} className="flex justify-end items-end">
+                  <IoClose size={25} />
+                </button>
+              </div>
 
-            <div className="bg-white w-3/4 h-full">
-               <div className="w-full flex justify-end px-2 mt-5">
-                    <button
-                     onClick={()=> closeSidebar()}
-                     className="flex justify-end items-end p-2 bg-slate-50/40 rounded-lg"
-                    >
-                      <IoClose size={25}/>
-                    </button>
-               </div>
-
-               <div className="-mt-10">
-                 <Sidebar/>
-               </div>
-               
-            </div>
-          </div>
+              <div className="-mt-10">
+                <Sidebar />
+              </div>
+            </motion.div>
+          </motion.div>
         )}
-
-      </Transition>
-
+      </AnimatePresence>
     </>
-  )
-}
-
+  );
+};
 
 
 

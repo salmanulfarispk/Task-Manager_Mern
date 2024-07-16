@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { setOpenSidebar } from '../redux/slices/authSlice';
 import clsx from 'clsx';
-
+import { motion } from 'framer-motion';
 
 
 const linkData = [
@@ -73,6 +73,7 @@ const Sidebar = () => {
      const NavLink=({elements})=>{
         return(
           <Link to={elements.link}
+          
            onClick={closeSidebar}
            className={clsx(
             "w-full lg:w-3/4 flex gap-2 px-3 py-2 rounded-full items-center text-gray-800 text-base hover:bg-[#2564ed2d] hover:text-[#2564ed]",
@@ -85,29 +86,56 @@ const Sidebar = () => {
         )
      };
 
+
+
   return (
     <div className='w-full h-full flex flex-col gap-6 p-5 '>
          <h1 className='flex gap-1 items-center'>
-           <p className='bg-blue-600 p-2 rounded-full'>
+           <motion.p className='bg-blue-600 p-2 rounded-full'
+            initial={{opacity:0, y: -100}}
+            animate={{opacity:1, y:0}}
+            transition={{ type: "spring",damping:10, stiffness:260, delay: 0.2}}
+           >
               <MdOutlineAddTask className='text-white text-2xl font-black'/>
-           </p>
-           <span className='text-2xl font-bold text-black'>TaskMe</span>
+           </motion.p>
+           <motion.span className='text-2xl font-bold text-black'
+            initial={{opacity:0,x: 100}}
+            animate={{opacity:1 ,x: 0  }}
+            transition={{
+              type:"tween",
+              ease: "linear",
+              delay: 0.4
+              
+            }}
+           >TaskMe</motion.span>
          </h1>
 
-         <div className='flex-1 flex flex-col gap-y-5 py-8'>  {/*flex-1 applies, which makes the parent div expand to fill all available space both horizontally and vertically within its parent container.*/}
+         <motion.div className='flex-1 flex flex-col gap-y-5 py-8'
+           initial={{ opacity: 0, x: -50 }}
+           animate={{ opacity: 1, x: 0 }}
+           transition={{ 
+            type:"tween",
+            duration: 0.5 }}
+         >
              {
                 sidebarlinks.map((link)=>(
                     <NavLink elements={link} key={link.label}/>
                 ))
              }
-         </div>
+         </motion.div>
 
-        <div>
+        <motion.div
+           initial={{ opacity: 0, x: -50 }}
+           animate={{ opacity: 1, x: 0 }}
+           transition={{ 
+            type:"tween",
+            duration: 0.5 }}
+        >
             <button className='flex gap-2 w-full p-2  items-center text-lg text-gray-800'>
                 <MdSettings/>
                 <span>Settings</span>
             </button>
-        </div>
+        </motion.div>
 
     </div>
   )
