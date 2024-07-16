@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IoMenu } from "react-icons/io5";
 import { setOpenSidebar } from '../redux/slices/authSlice';
 import { MdOutlineSearch } from "react-icons/md";
+import UserAvatar from "./UserAvatar"
 
 const Navbar = () => {
 

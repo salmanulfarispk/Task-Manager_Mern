@@ -27,6 +27,8 @@ function Layout(){
 
            {/**here  Mobile  Sidebar component*/}
 
+            
+
           <div className="flex-1 overflow-y-auto">
                {/**Navbar */}
                <Navbar/>

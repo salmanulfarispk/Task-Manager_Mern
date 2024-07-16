@@ -23,10 +23,10 @@ const Login = () => {
    
      dispatch(setCredentials({         //dummy, needed to remove
       id: 1,
-      username: 'salman',
+      username: 'salman pk',
       email: 'slamnpk@gmail.com'
      }))
-    console.log("user",user);
+    
 
   return (
     <div className='w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-primary'>
