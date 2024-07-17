@@ -5,7 +5,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { HiDuplicate } from "react-icons/hi";
 import { MdAdd, MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { Menu, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import AddTask from "./AddTask";
 import AddSubTask from "./AddSubTasks";
 import ConfirmatioDialog from "../Dialogs";
@@ -41,7 +41,7 @@ const TaskDialog = ({ task }) => {
     {
       label: "Duplicate",
       icon: <HiDuplicate className='mr-2 h-5 w-5' aria-hidden='true' />,
-      onClick: () => duplicateHanlder(),
+      onClick: () => duplicateHandler(),
     },
   ];
 
@@ -62,10 +62,10 @@ const TaskDialog = ({ task }) => {
             leaveFrom='transform opacity-100 scale-100'
             leaveTo='transform opacity-0 scale-95'
           >
-            <MenuItems className='absolute p-4 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none'>
+            <Menu.Items className='absolute p-4 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none'>
               <div className='px-1 py-1 space-y-2'>
                 {items.map((el) => (
-                  <MenuItem key={el.label}>
+                  <Menu.Item key={el.label}>
                     {({ active }) => (
                       <button
                         onClick={el?.onClick}
@@ -77,12 +77,12 @@ const TaskDialog = ({ task }) => {
                         {el.label}
                       </button>
                     )}
-                  </MenuItem>
+                  </Menu.Item>
                 ))}
               </div>
 
               <div className='px-1 py-1'>
-                <MenuItem>
+                <Menu.Item>
                   {({ active }) => (
                     <button
                       onClick={() => deleteClicks()}
@@ -97,9 +97,9 @@ const TaskDialog = ({ task }) => {
                       Delete
                     </button>
                   )}
-                </MenuItem>
+                </Menu.Item>
               </div>
-            </MenuItems>
+            </Menu.Items>
           </Transition>
         </Menu>
       </div>

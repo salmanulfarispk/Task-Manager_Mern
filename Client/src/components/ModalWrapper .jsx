@@ -2,11 +2,10 @@ import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/re
 import { Fragment, useRef } from "react";
 
 const ModalWrapper = ({ open, setOpen, children }) => {
-    
   const cancelButtonRef = useRef(null);
 
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition show={open} as={Fragment}>
       <Dialog
         as='div'
         className='relative z-10 w-full'
@@ -39,7 +38,7 @@ const ModalWrapper = ({ open, setOpen, children }) => {
               <DialogPanel className='w-full relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all pb-0 sm:my-8 sm:w-full sm:max-w-lg'>
                 <div className='bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4'>
                   <div className='sm:flex sm:items-start'>
-                    <div className='w-full mt-3  sm:ml-4 sm:mt-0 sm:text-left'>
+                    <div className='w-full mt-3 sm:ml-4 sm:mt-0 sm:text-left'>
                       {children}
                     </div>
                   </div>
@@ -49,7 +48,7 @@ const ModalWrapper = ({ open, setOpen, children }) => {
           </div>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 };
 

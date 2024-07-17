@@ -6,8 +6,7 @@ import {
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
-import { toast } from "sonner";
-import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../../utils/index";
+import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from  "../../utils/index"
 import clsx from "clsx";
 import { FaList } from "react-icons/fa";
 import UserInfo from "../UserInfo";
