@@ -66,6 +66,7 @@ export default function ConfirmatioDialog({
   );
 }
 
+
 export function UserAction({ open, setOpen, onClick = () => {} }) {
   const closeDialog = () => {
     setOpen(false);

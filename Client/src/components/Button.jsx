@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 
 const Button = ({ icon, className, type, label, onClick = () => {} }) => {
+  
   return (
     <button
       type={type || 'button'}

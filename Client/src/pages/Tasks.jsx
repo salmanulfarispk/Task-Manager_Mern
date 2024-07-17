@@ -3,7 +3,7 @@ import { FaList } from "react-icons/fa";
 import { MdGridView } from "react-icons/md";
 import { useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
-import { Title } from '../components/Title';
+import  Title  from '../components/Title';
 import Button from '../components/Button';
 import { IoMdAdd } from 'react-icons/io';
 import Tabs from '../components/Tabs';
@@ -30,7 +30,7 @@ const Tasks = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const status = params?.status || "active";
+  const status = params?.status || "";
 
   const handleOpenModal = () => {
     setOpen(true);
