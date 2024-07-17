@@ -1,4 +1,4 @@
-import { DialogTitle } from "@headlessui/react";
+import { Dialog } from "@headlessui/react";
 import clsx from "clsx";
 import { FaQuestion } from "react-icons/fa";
 import ModalWrapper from "./ModalWrapper ";
@@ -23,7 +23,7 @@ export default function ConfirmatioDialog({
     <>
       <ModalWrapper open={open} setOpen={closeDialog}>
         <div className='py-4 w-full flex flex-col gap-4 items-center justify-center'>
-          <DialogTitle as='h3' className=''>
+          <Dialog.Title as='h3' className=''>
             <p
               className={clsx(
                 "p-3 rounded-full ",
@@ -34,7 +34,7 @@ export default function ConfirmatioDialog({
             >
               <FaQuestion size={60} />
             </p>
-          </DialogTitle>
+          </Dialog.Title>
 
           <p className='text-center text-gray-500'>
             {msg ?? "Are you sure you want to delete the selected record?"}
@@ -76,11 +76,11 @@ export function UserAction({ open, setOpen, onClick = () => {} }) {
     <>
       <ModalWrapper open={open} setOpen={closeDialog}>
         <div className='py-4 w-full flex flex-col gap-4 items-center justify-center'>
-          <DialogTitle as='h3' className=''>
+          <Dialog.Title as='h3' className=''>
             <p className={clsx("p-3 rounded-full ", "text-red-600 bg-red-200")}>
               <FaQuestion size={60} />
             </p>
-          </DialogTitle>
+          </Dialog.Title>
 
           <p className='text-center text-gray-500'>
             {"Are you sure you want to activate or deactive this account?"}

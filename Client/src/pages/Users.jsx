@@ -6,7 +6,7 @@ import { summary } from "../assets/datas";
 import { getInitials } from "../utils/index";
 import clsx from "clsx";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
-
+import AddUser from "../components/AddUser"
 
 
 const Users = () => {
@@ -128,7 +128,12 @@ const Users = () => {
 
     </div>
 
-    {/* <AddUser/> */}
+    <AddUser
+     open={open}
+     setOpen={setOpen}
+     userData={selected}
+     key={new Date().getTime().toString()}
+    />
 
     <ConfirmatioDialog
      open={openDialog}
