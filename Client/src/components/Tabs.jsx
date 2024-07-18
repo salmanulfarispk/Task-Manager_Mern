@@ -28,7 +28,11 @@ export default function Tabs({ tabs, setSelected, children }) {
             </Tab>
           ))}
         </Tab.List>
-        <Tab.Panels className='w-full mt-2'>{children}</Tab.Panels>
+
+        <Tab.Panels className='w-full mt-2'>
+          {children}
+        </Tab.Panels>
+
       </Tab.Group>
     </div>
   );

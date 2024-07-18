@@ -30,7 +30,7 @@ const Tasks = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const status = params?.status || "";
+  const status = params?.status || ""; 
 
   const handleOpenModal = () => {
     setOpen(true);

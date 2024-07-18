@@ -61,7 +61,7 @@ const Sidebar = () => {
 
     const dispatch=useDispatch()
      const location=useLocation()
-     const path=location.pathname.split("/")[1];  //it splits starts with fisrt"/" in routes .it array likes ["",jbsb,shds]as [0,1,2] 0 is a empty string
+     const path=location.pathname.split("/")[1];  //it splits starts with fisrt"/" in routes .it contain array likes ["",jbsb,shds]as [0,1,2] 0 is a empty string
     
 
      const sidebarlinks= user?.isAdmin ? linkData : linkData.slice(0,5)
@@ -78,7 +78,7 @@ const Sidebar = () => {
            className={clsx(
             "w-full lg:w-3/4 flex gap-2 px-3 py-2 rounded-full items-center text-gray-800 text-base hover:bg-[#2564ed2d] hover:text-[#2564ed]",
             path === elements.link.split("/")[0] || path === elements.link.split("/")[1] ? "bg-blue-600 text-slate-50" : ""
-           )}  //routes path arrays first element not 0th === links with 0th element or 1st element .
+           )}  //after "/" ,routes links  0th element or 1st element .
           >
             {elements.icon}
             <span className='hover:text-[#2564ed]'>{elements.label}</span>
