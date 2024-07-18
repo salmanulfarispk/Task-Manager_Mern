@@ -64,7 +64,7 @@ const Sidebar = () => {
      const path=location.pathname.split("/")[1];  //it splits starts with fisrt"/" in routes .it array likes ["",jbsb,shds]as [0,1,2] 0 is a empty string
     
 
-     const sidebarlinks= user?.isAdmin ? linkData : linkData.slice(0,7)
+     const sidebarlinks= user?.isAdmin ? linkData : linkData.slice(0,5)
 
      const closeSidebar=()=>{
         dispatch(setOpenSidebar(false))

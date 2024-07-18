@@ -228,6 +228,10 @@ const TaskDetails = () => {
   );
 };
 
+
+
+
+
 const Activities = ({ activity, id }) => {
   const [selected, setSelected] = useState(act_types[0]);
   const [text, setText] = useState("");

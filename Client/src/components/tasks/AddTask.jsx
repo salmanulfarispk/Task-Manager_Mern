@@ -33,6 +33,7 @@ const AddTask = ({ open, setOpen }) => {
     setAssets(e.target.files);
   };
 
+    
   return (
     <ModalWrapper open={open} setOpen={setOpen}>
       <form onSubmit={handleSubmit(submitHandler)}>

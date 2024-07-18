@@ -120,7 +120,7 @@ function App() {
           <Route path="/todo/:status" element={<Tasks />} />
           <Route path="/team" element={<Users />} />
           <Route path="/trashed" element={<Trash />} />
-          <Route path="/task/:id" element={<TaskDetails />} />
+          <Route path="/tasks/:id" element={<TaskDetails />} />
           </Route>
 
           <Route path="/log-in" element={<Login />} />
