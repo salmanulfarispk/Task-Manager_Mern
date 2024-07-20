@@ -69,6 +69,7 @@ import { createJWT }  from "../utils/GenerateToken.js"
             })
         }
 
+
         if(!user?.isActive){
             return res.status(401).json({
                 status: false,
@@ -76,8 +77,9 @@ import { createJWT }  from "../utils/GenerateToken.js"
             })
         }
 
-        const isMatchPass= await bcrypt.compare(user.password,password)
 
+        const isMatchPass= await bcrypt.compare(password,user.password)
+    
         if(user && isMatchPass){
             createJWT(res,user._id)
 
@@ -89,7 +91,8 @@ import { createJWT }  from "../utils/GenerateToken.js"
             return res
               .status(401)
               .json({ status: false, message: "Invalid email or password" });
-          }        
+          }  
+
     } catch (error) {
         return res.status(400).json({
             status: false,
