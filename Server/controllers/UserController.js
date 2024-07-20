@@ -143,8 +143,8 @@ import Notification from "../models/notification.js"
         const {userId}=req.user;
 
         const notification = await Notification.find({
-            team: userId,                     // if i logined now,and it cheks with my userid thats inside team or not.
-            isRead: { $nin : [userId]}         // if iam in the team ,then it Ensures only unread notifications are returned to me.
+            team: userId,                     // if i logined now,and it cheks with my userid thats inside team include or not.
+            isRead: { $nin : [userId]}         //($not in) if iam in the team ,then it ensures that iam not includes in the isRead array,no userid in there means not readed,after clicks markasread button,then id added to that isread array
         }).populate("task", "title")           // then populate only title inside the task
 
         res.status(201).json(notification);
@@ -154,3 +154,5 @@ import Notification from "../models/notification.js"
       return res.status(400).json({ status: false, message: error.message });
     }
   }
+
+  

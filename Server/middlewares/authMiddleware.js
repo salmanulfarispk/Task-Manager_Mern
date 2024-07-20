@@ -11,7 +11,7 @@ const ProtectRoute = async(req,res, next)=>{
         if(token){
             const decodedToken=  jwt.verify(token,process.env.JWT_SECRET)
 
-            const resp= await User.findById(decodedToken.userId).select("isAdmin email")//only we need is isAdmin and email
+            const resp= await User.findById(decodedToken.userId).select("isAdmin email")//only we need is isAdmin and email and when generates token using _id as userId
 
             req.user={
                 email: resp.email,
