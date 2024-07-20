@@ -1,7 +1,7 @@
 import User from "../models/User.js"
 import  bcrypt from "bcryptjs"
 import { createJWT }  from "../utils/GenerateToken.js"
-
+import Notification from "../models/notification.js"
 
 
 
@@ -121,3 +121,36 @@ import { createJWT }  from "../utils/GenerateToken.js"
         });
     }
  }
+
+
+ export const getTeamList = async (req, res) => {
+    try {
+      const users = await User.find().select("name title role email isActive");
+  
+      res.status(200).json(users);
+      
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ status: false, message: error.message });
+    }
+  };
+
+
+
+  export const getNotification=async(req,res)=>{
+    try {
+
+        const {userId}=req.user;
+
+        const notification = await Notification.find({
+            team: userId,                     // if i logined now,and it cheks with my userid thats inside team or not.
+            isRead: { $nin : [userId]}         // if iam in the team ,then it Ensures only unread notifications are returned to me.
+        }).populate("task", "title")           // then populate only title inside the task
+
+        res.status(201).json(notification);
+
+    } catch (error) {
+        console.log(error);
+      return res.status(400).json({ status: false, message: error.message });
+    }
+  }

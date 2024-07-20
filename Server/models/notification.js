@@ -10,7 +10,7 @@ const NotificationSchema= new Schema({
         }
     ],
     text: {
-        type: String,
+        type: String,   
         required: true,
     },
     task: {

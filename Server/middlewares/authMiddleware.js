@@ -38,7 +38,7 @@ const ProtectRoute = async(req,res, next)=>{
 
 
 const isAdminRoute =async(req,res, next)=>{
-    if(req.user && req.user.isAdmin){
+    if(req.user && req.user.isAdmin){  //isAdmin as true this works
         next()
     }else{
         return res.status(401).json({
