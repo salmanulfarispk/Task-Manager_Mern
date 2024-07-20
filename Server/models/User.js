@@ -1,6 +1,6 @@
 import { timeStamp } from "console";
 import mongoose, { Schema } from "mongoose";
-import { title } from "process";
+
 
 
 const UserSchema= new Schema({
