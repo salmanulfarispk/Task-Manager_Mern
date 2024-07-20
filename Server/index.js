@@ -5,7 +5,7 @@ import dotenv from "dotenv"
 import morgan from "morgan"
 import { DBconnection } from "./utils/Dbconnects.js"
 import { errorHandler, routeNotFound } from "./middlewares/errorMiddleware.js"
-
+import routes from "./routes/index.js"
 
 
 
@@ -29,7 +29,7 @@ app.use(cookieParser())
 app.use(morgan("dev"))  //The 'dev' format is optimized for development purposes.
 
 
-// app.use("/api", routes)
+app.use("/api", routes)
 
 app.use(routeNotFound)
 app.use(errorHandler)
