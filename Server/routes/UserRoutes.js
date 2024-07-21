@@ -19,8 +19,8 @@ router
 
 //Admin only
 
-.patch("/:id",isAdminRoute,ActivateteUsers)
-.delete("/:id",isAdminRoute,DeleteUser)
+.patch("/:id",ProtectRoute,isAdminRoute,ActivateteUsers)
+.delete("/:id",ProtectRoute,isAdminRoute,DeleteUser)
 
 
 

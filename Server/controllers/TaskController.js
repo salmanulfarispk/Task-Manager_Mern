@@ -1,5 +1,6 @@
 import Task from "../models/task.js"
 import Notification from "../models/notification.js"
+import User from "../models/User.js";
 
 
 
@@ -31,7 +32,7 @@ export const createTask = async (req, res) => {
         const task = await Task.create({
             title,
             team,
-            stage: stage.toLowerCase(),
+            stage: stage.toLowerCase(),   //like progress,todo,complted... etcc
             date,
             priority: priority.toLowerCase(),
             assets,
@@ -101,6 +102,81 @@ export const DuplicateTask = async (req, res) => {
             status: true,
             message: "Task duplicated successfully"
           })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+
+export const PostActivityTask= async(req,res)=>{
+    try {
+
+        const {id}=req.params;
+        const {userId}=req.user;
+        const {type,activity}=req.body;
+
+        const task=await Task.findById(id)
+
+        const datas={
+            type,
+            activity,
+            by: userId
+        };
+
+         task.activities.push(datas)
+          
+         await task.save();
+
+         res.status(200).json({
+            status: true,
+            message: "Activity posted succesfully"
+         })
+
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, message: error.message });
+    }
+
+}
+
+
+
+export const DashboardStatics=async(req,res)=>{
+    try {
+         
+        const{userId, isAdmin}=req.user;
+
+        const allTasks= isAdmin  ?  //true
+                await Task.find({
+                    isTrashed: false
+                }).populate({
+                    path: "team",
+                    select: "name role title email"
+                }).sort({_id: -1})      //most recently created tasks will be listed first.
+                
+                : //false, other user
+                
+                await Task.find({
+                    isTrashed: false,
+                    team: { $all : [userId]} //Ensure logged-in user is part of the team. others
+                }).populate({
+                    path:"team",
+                    select: "name role title email",
+                }).sort({_id: -1 })
+
+
+        const users= await User.find({ isActive: true })
+           .select("name title role isAdmin createdAt")
+           .limit(10)
+           .sort({_id : -1 })
+
+          
+                      
+
+        
 
     } catch (error) {
         console.log(error)
