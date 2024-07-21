@@ -254,3 +254,50 @@ export const ChangePassword=async(req,res)=>{
         return res.status(400).json({ status: false, message: error.message });
     }
 }
+
+export const ActivateteUsers=async(req,res)=>{
+    try {
+      
+        const {id}=req.params;
+
+        const user=await User.findById(id)
+
+        if(user){
+             user.isActive= req.body.isActive;
+
+             await user.save()
+
+             res.status(200).json({
+                status: true,
+                message: `User account has been ${
+                    user?.isActive ? "activated":"disabled"
+                }`
+             })
+        }else {
+            res.status(404).json({ status: false, message: "User not found" });
+          }
+  
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+
+export const DeleteUser=async(req,res)=>{
+    try {
+
+        const {id}=req.params;
+
+           await User.findByIdAndDelete(id)
+
+        res.status(200).json({
+            status: true, 
+            message: "User deleted successfully"
+        })
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}

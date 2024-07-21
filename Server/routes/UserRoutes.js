@@ -1,5 +1,5 @@
 import express from "express"
-import {ChangePassword, getNotification, getTeamList, LoginUser, Logout, MarkAsNotification, RegisterUser, updateUserProfile} from "../controllers/UserController.js"
+import {ActivateteUsers, ChangePassword, DeleteUser, getNotification, getTeamList, LoginUser, Logout, MarkAsNotification, RegisterUser, updateUserProfile} from "../controllers/UserController.js"
 import {ProtectRoute,isAdminRoute} from "../middlewares/authMiddleware.js"
 
 const router=express.Router()
@@ -16,6 +16,11 @@ router
 .put("/mark-as-read",ProtectRoute,MarkAsNotification)
 .patch("/change-Password",ProtectRoute,ChangePassword)
 
+
+//Admin only
+
+.patch("/:id",isAdminRoute,ActivateteUsers)
+.delete("/:id",isAdminRoute,DeleteUser)
 
 
 
