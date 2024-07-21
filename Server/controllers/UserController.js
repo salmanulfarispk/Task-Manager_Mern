@@ -259,11 +259,12 @@ export const ActivateteUsers=async(req,res)=>{
     try {
       
         const {id}=req.params;
+        const { isActive } = req.body;
 
         const user=await User.findById(id)
 
         if(user){
-             user.isActive= req.body.isActive;
+             user.isActive= isActive;
 
              await user.save()
 
