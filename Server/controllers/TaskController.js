@@ -365,7 +365,7 @@ export const trashTask = async (req, res) => {
 
         const task = await Task.findByIdAndUpdate(id, {
             isTrashed: true
-          },
+        },
             { new: true }
         );
 
@@ -376,6 +376,46 @@ export const trashTask = async (req, res) => {
         res.status(200).json({
             status: true,
             message: `Task trashed successfully.`,
+        });
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+export const deleteRestore = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const { actionType } = req.query;
+
+        if (actionType === "delete") {
+            await Task.findByIdAndDelete(id)
+        } else if (actionType === "deleteAll") {
+            await Task.deleteMany({ isTrashed: true })
+        }
+        else if (actionType === "restore") {
+            const resp = await Task.findById(id);
+            if (resp) {
+                resp.isTrashed = false;
+                await resp.save();
+            } else {
+                return res.status(404).json({
+                    status: false,
+                    message: "Task not found",
+                });
+            }
+        }
+
+        else if (actionType === "restoreAll") {
+            await Task.updateMany({ isTrashed: true }, { $set: { isTrashed: false } });
+        }
+
+
+        res.status(200).json({
+            status: true,
+            message: `All Operation performed successfully.`,
         });
 
     } catch (error) {
