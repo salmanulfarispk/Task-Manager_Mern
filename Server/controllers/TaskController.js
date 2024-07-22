@@ -168,16 +168,108 @@ export const DashboardStatics=async(req,res)=>{
                 }).sort({_id: -1 })
 
 
-        const users= await User.find({ isActive: true })
+        const users= await User.find({ isActive: true })   
            .select("name title role isAdmin createdAt")
            .limit(10)
            .sort({_id : -1 })
 
-          
-                      
+           //group task by stage and calculate counts
 
+           const groupTasks= allTasks.reduce((result, task)=>{
+
+            const stage= task.stage;
+
+              if(!result[stage]){       //if result object has not have the  same stage value,then it added to result object and set as 1
+                result[stage]=1;
+              }else{
+                result[stage] += 1;     //if result object has the same stage value then increment with +1
+              }
+
+              return result;
+           },{})                         // Initialize the result object as an empty object
+
+
+
+           //Group task by priority
+
+           const groupedData= Object.entries(     //return result object into array
+            allTasks.reduce((result,task)=>{
+                const {priority}=task;
+
+               result[priority]= (result[priority] || 0) + 1;  //if result has already has a value ,then increment  one to that value,if no value then defalt as 0,then icrement with one
+               return result;
+            },{})
+           ).map(([name,total])=>{
+              {
+                name ,total                  //[ { },{},....] looklike this
+              }
+           })
+          
+           //calculate total taks
+           const totalTasks= allTasks?.length;
+           const last10Tasks= allTasks.slice(0, 10)   ;
+
+           const summary={
+            totalTasks,
+            last10Tasks,
+            users: isAdmin ? users : [] ,    //only admin can see the last 10 active list of users, 
+            tasks: groupTasks,
+            grapgdata:groupedData
+           }
+                      
+            res.status(200).json({
+                status: true,
+                message: " Got all dashboard statics Successfully",
+                ...summary,
+            })
         
 
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+
+export const getTaskss= async(req,res)=>{
+    try {
+
+        const {stage,isTrashed}=req.query;
+
+        let query= {isTrashed: isTrashed ? true : false };
+
+         if(stage){
+           query.stage= stage;
+          }
+ 
+          let queryResult =await Task.find(query)
+           .populate({
+             path:"team",
+             select: "name title email"
+           })
+           .sort({_id: -1});
+
+           const tasks=await queryResult;
+
+
+           res.status(200).json({
+            status: true,
+            tasks,
+           })
+
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+
+export const getTask=async(req,res)=>{
+    try {
+
+        
+        
     } catch (error) {
         console.log(error)
         return res.status(400).json({ status: false, message: error.message });
