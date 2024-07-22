@@ -7,7 +7,7 @@ const router=express.Router()
 
 
 router.use("/user",userRoute)
-router.use("task",TaskRoute)
+router.use("/task",TaskRoute)
 
 
 export default router

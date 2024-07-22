@@ -13,7 +13,7 @@ export const createTask = async (req, res) => {
 
         let text = "New task has been assigned to you";
         if (team?.length > 1) {
-            text = text + `and ${team?.length - 1} others.`
+            text = text + ` and ${team?.length - 1} others.`
         }
 
         text =
@@ -397,15 +397,9 @@ export const deleteRestore = async (req, res) => {
         }
         else if (actionType === "restore") {
             const resp = await Task.findById(id);
-            if (resp) {
-                resp.isTrashed = false;
-                await resp.save();
-            } else {
-                return res.status(404).json({
-                    status: false,
-                    message: "Task not found",
-                });
-            }
+
+            resp.isTrashed = false;
+            resp.save();
         }
 
         else if (actionType === "restoreAll") {
