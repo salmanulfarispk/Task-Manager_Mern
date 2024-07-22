@@ -92,16 +92,16 @@ export const DuplicateTask = async (req, res) => {
             } priority, so check and act accordingly. The task date is ${task.date.toDateString()}. Thank you!!!`;
 
 
-          await Notification.create({
+        await Notification.create({
             team: task.team,
             text,
             task: newTask._id
-          })    
+        })
 
-          res.status(200).json({
+        res.status(200).json({
             status: true,
             message: "Task duplicated successfully"
-          })
+        })
 
     } catch (error) {
         console.log(error)
@@ -110,31 +110,31 @@ export const DuplicateTask = async (req, res) => {
 }
 
 
-export const PostActivityTask= async(req,res)=>{
+export const PostActivityTask = async (req, res) => {
     try {
 
-        const {id}=req.params;
-        const {userId}=req.user;
-        const {type,activity}=req.body;
+        const { id } = req.params;
+        const { userId } = req.user;
+        const { type, activity } = req.body;
 
-        const task=await Task.findById(id)
+        const task = await Task.findById(id)
 
-        const datas={
+        const datas = {
             type,
             activity,
             by: userId
         };
 
-         task.activities.push(datas)
-          
-         await task.save();
+        task.activities.push(datas)
 
-         res.status(200).json({
+        await task.save();
+
+        res.status(200).json({
             status: true,
             message: "Activity posted succesfully"
-         })
+        })
 
-        
+
     } catch (error) {
         console.log(error)
         return res.status(400).json({ status: false, message: error.message });
@@ -144,85 +144,85 @@ export const PostActivityTask= async(req,res)=>{
 
 
 
-export const DashboardStatics=async(req,res)=>{
+export const DashboardStatics = async (req, res) => {
     try {
-         
-        const{userId, isAdmin}=req.user;
 
-        const allTasks= isAdmin  ?  //true
-                await Task.find({
-                    isTrashed: false
-                }).populate({
-                    path: "team",
-                    select: "name role title email"
-                }).sort({_id: -1})      //most recently created tasks will be listed first.
-                
-                : //false, other user
-                
-                await Task.find({
-                    isTrashed: false,
-                    team: { $all : [userId]} //Ensure logged-in user is part of the team. others
-                }).populate({
-                    path:"team",
-                    select: "name role title email",
-                }).sort({_id: -1 })
+        const { userId, isAdmin } = req.user;
+
+        const allTasks = isAdmin ?  //true
+            await Task.find({
+                isTrashed: false
+            }).populate({
+                path: "team",
+                select: "name role title email"
+            }).sort({ _id: -1 })      //most recently created tasks will be listed first.
+
+            : //false, other user
+
+            await Task.find({
+                isTrashed: false,
+                team: { $all: [userId] } //Ensure logged-in user is part of the team. others
+            }).populate({
+                path: "team",
+                select: "name role title email",
+            }).sort({ _id: -1 })
 
 
-        const users= await User.find({ isActive: true })   
-           .select("name title role isAdmin createdAt")
-           .limit(10)
-           .sort({_id : -1 })
+        const users = await User.find({ isActive: true })
+            .select("name title role isAdmin createdAt")
+            .limit(10)
+            .sort({ _id: -1 })
 
-           //group task by stage and calculate counts
+        //group task by stage and calculate counts
 
-           const groupTasks= allTasks.reduce((result, task)=>{
+        const groupTasks = allTasks.reduce((result, task) => {
 
-            const stage= task.stage;
+            const stage = task.stage;
 
-              if(!result[stage]){       //if result object has not have the  same stage value,then it added to result object and set as 1
-                result[stage]=1;
-              }else{
+            if (!result[stage]) {       //if result object has not have the  same stage value,then it added to result object and set as 1
+                result[stage] = 1;
+            } else {
                 result[stage] += 1;     //if result object has the same stage value then increment with +1
-              }
+            }
 
-              return result;
-           },{})                         // Initialize the result object as an empty object
+            return result;
+        }, {})                         // Initialize the result object as an empty object
 
 
 
-           //Group task by priority
+        //Group task by priority
 
-           const groupedData= Object.entries(     //return result object into array
-            allTasks.reduce((result,task)=>{
-                const {priority}=task;
+        const groupedData = Object.entries(     //return result object into array
+            allTasks.reduce((result, task) => {
+                const { priority } = task;
 
-               result[priority]= (result[priority] || 0) + 1;  //if result has already has a value ,then increment  one to that value,if no value then defalt as 0,then icrement with one
-               return result;
-            },{})
-           ).map(([name,total])=>{
-              {
-                name ,total                  //[ { },{},....] looklike this
-              }
-           })
-          
-           //calculate total taks
-           const totalTasks= allTasks?.length;
-           const last10Tasks= allTasks.slice(0, 10)   ;
+                result[priority] = (result[priority] || 0) + 1;  //if result has already has a value ,then increment  one to that value,if no value then defalt as 0,then icrement with one
+                return result;
+            }, {})
+        ).map(([name, total]) => {
+            {
+                name, total                  //[ { },{},....] looklike this
+            }
+        })
 
-           const summary={
+        //calculate total taks
+        const totalTasks = allTasks?.length;
+        const last10Tasks = allTasks.slice(0, 10);
+
+        const summary = {
             totalTasks,
             last10Tasks,
-            users: isAdmin ? users : [] ,    //only admin can see the last 10 active list of users, 
+            users: isAdmin ? users : [],    //only admin can see the last 10 active list of users, 
             tasks: groupTasks,
-            grapgdata:groupedData
-           }
-                      
-            res.status(200).json({
-                status: true,
-                message: " Got all dashboard statics Successfully",
-                ...summary,
-            })
-        
+            grapgdata: groupedData
+        }
+
+        res.status(200).json({
+            status: true,
+            message: " Got all dashboard statics Successfully",
+            ...summary,
+        })
+
 
     } catch (error) {
         console.log(error)
@@ -231,33 +231,33 @@ export const DashboardStatics=async(req,res)=>{
 }
 
 
-export const getTaskss= async(req,res)=>{
+export const getTaskss = async (req, res) => {
     try {
 
-        const {stage,isTrashed}=req.query;
+        const { stage, isTrashed } = req.query;
 
-        let query= {isTrashed: isTrashed ? true : false };
+        let query = { isTrashed: isTrashed ? true : false };
 
-         if(stage){
-           query.stage= stage;
-          }
- 
-          let queryResult =await Task.find(query)
-           .populate({
-             path:"team",
-             select: "name title email"
-           })
-           .sort({_id: -1});
+        if (stage) {
+            query.stage = stage;
+        }
 
-           const tasks=await queryResult;
+        let queryResult = await Task.find(query)
+            .populate({
+                path: "team",
+                select: "name title email"
+            })
+            .sort({ _id: -1 });
+
+        const tasks = await queryResult;
 
 
-           res.status(200).json({
+        res.status(200).json({
             status: true,
             tasks,
-           })
+        })
 
-        
+
     } catch (error) {
         console.log(error)
         return res.status(400).json({ status: false, message: error.message });
@@ -265,11 +265,119 @@ export const getTaskss= async(req,res)=>{
 }
 
 
-export const getTask=async(req,res)=>{
+export const getTask = async (req, res) => {
     try {
 
-        
-        
+        const { id } = req.params;
+
+        const task = await Task.findById(id)
+            .populate({
+                path: "team",
+                select: "name title role email"
+            })
+            .populate({
+                path: "activities.by",
+                select: "name"
+            })
+
+        res.status(200).json({
+            status: true,
+            task,
+        });
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+
+export const CreateSubTask = async (req, res) => {
+    try {
+
+        const { title, date, tag } = req.body;
+        const { id } = req.params;
+
+
+        const newSubTask = {
+            title,
+            date,
+            tag,
+        };
+
+        const task = await Task.findById(id)
+
+        task.subTasks.push(newSubTask)
+
+        await task.save();
+
+        res.status(200).json({
+            status: true,
+            message: "SubTask added successfully."
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+
+export const UpdateTask = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        const { title, priority, date, stage, team, assets } = req.body;
+
+        const updatetask = await Task.findByIdAndUpdate(id, {
+            title,
+            priority: priority.toLowerCase(),
+            date,
+            stage: stage.toLowerCase(),
+            team,
+            assets
+        },
+            { new: true }
+        );
+
+
+        if (!updatetask) {
+            return res.status(404).json({ status: false, message: "Task not found" });
+        }
+
+        res.status(200).json({
+            status: true,
+            message: "Task duplicated successfully."
+        });
+
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, message: error.message });
+    }
+}
+
+
+export const trashTask = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+
+        const task = await Task.findByIdAndUpdate(id, {
+            isTrashed: true
+          },
+            { new: true }
+        );
+
+        if (!task) {
+            return res.status(404).json({ status: false, message: "Task not found" });
+        }
+
+        res.status(200).json({
+            status: true,
+            message: `Task trashed successfully.`,
+        });
+
     } catch (error) {
         console.log(error)
         return res.status(400).json({ status: false, message: error.message });
