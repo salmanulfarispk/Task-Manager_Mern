@@ -5,13 +5,13 @@ import TaskDetails from "./pages/TaskDetails"
 import Tasks from "./pages/Tasks"
 import Trash from "./pages/Trash"
 import Users from "./pages/Users"
-import { Toaster } from "sonner"
 import { useDispatch, useSelector } from "react-redux"
 import Sidebar from "./components/Sidebar"
 import Navbar from "./components/Navbar"
 import { setOpenSidebar } from "./redux/slices/authSlice"
 import { IoClose } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
+import { Toaster } from "sonner"
 
 
 

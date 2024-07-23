@@ -5,7 +5,9 @@ import  Textbox from '../components/Textbox';
 import Button from '../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../redux/slices/api/authApiSlice';
-import { toast } from 'sonner';
+import { toast } from "sonner"
+import { setCredentials } from '../redux/slices/authSlice';
+import Loading from "../components/Loading"
 
 
 const Login = () => {
@@ -19,18 +21,19 @@ const Login = () => {
 
   const SubmitHandler= async(data)=>{
      try {
-      const result= await login(data);
+      const result= await login(data).unwrap()
 
-      console.log("result",result);
-      
-     } catch (error) {
-       console.log(error);
-       toast.error(error?.data?.message  || error.message)
+       dispatch(setCredentials(result))
+       navigate("/")
+       
+     }catch(error){
+        console.log("Login error:", error);
+        toast.error(error?.data?.message || error?.message)
      }
   }
     useEffect(()=>{
       user && navigate("/dashboard")
-    },[user,dispatch])
+    },[user])
    
 
   return (
@@ -101,12 +104,13 @@ const Login = () => {
                   hover:underline cursor-pointer'>Forgot Password ?</span>
               </div>
 
-                <Button
+               { isLoading ? <Loading/> :
+                 <Button
                  type='submit'
                  label='Submit'
                  className="w-full h-10 bg-blue-700 text-white rounded-full"
                 />
-               
+                 }
             </form>
          </div>
 

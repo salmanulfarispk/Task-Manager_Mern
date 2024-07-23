@@ -17,6 +17,8 @@ const UserAvatar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+
+
     const logouthandler = () => {
         console.log("Logout success!");
     };
@@ -29,7 +31,7 @@ const UserAvatar = () => {
                     <div>
                         <Menu.Button className="w-10 h-10 2xl:w-12 2xl:h-12 items-center justify-center rounded-full bg-blue-600">
                             <span className='text-white font-semibold'>
-                                {user ? getInitials(user.username) : ''}
+                                {user ? getInitials(user.name) : ''}
                             </span>
                         </Menu.Button>
                     </div>
