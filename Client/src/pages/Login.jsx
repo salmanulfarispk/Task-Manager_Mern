@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import  Textbox from '../components/Textbox';
 import Button from '../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCredentials } from '../redux/slices/authSlice';
+import { useLoginMutation } from '../redux/slices/api/authApiSlice';
+import { toast } from 'sonner';
 
 
 const Login = () => {
@@ -14,34 +15,23 @@ const Login = () => {
      const dispatch=useDispatch()
     const navigate=useNavigate()
 
-  const SubmitHandler=(data)=>{
-     console.log("submit data" );
+    const [login, {isLoading}]=useLoginMutation()
+
+  const SubmitHandler= async(data)=>{
+     try {
+      const result= await login(data);
+
+      console.log("result",result);
+      
+     } catch (error) {
+       console.log(error);
+       toast.error(error?.data?.message  || error.message)
+     }
   }
     useEffect(()=>{
       user && navigate("/dashboard")
     },[user,dispatch])
    
-     dispatch(setCredentials({         //dummy, needed to remove
-       _id: "662f32ffd1303cc",
-    username: "Codewave",
-    title: "Administrator",
-    role: "Admin",
-    email: "admin@mts.com",
-    isAdmin: true,
-    tasks: [],
-    createdAt: "2024-02-06T09:58:44.794Z",
-    updatedAt: "2024-02-07T06:13:26.757Z",
-    __v: 0,
-    isActive: true,
-     }))
-
-  //    dispatch(setCredentials({         //dummy, needed to remove
-  //     _id: "1",
-  //  username: "salman pk",
-  //  title: "Administrator",
-  //  isActive: true,
-  //   }))
-    
 
   return (
     <div className='w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-primary'>
