@@ -6,14 +6,16 @@ import { Dialog } from "@headlessui/react";
 import Textbox from "./Textbox";
 import Loading from "./Loading";
 import Button from "./Button";
+import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
+import {toast} from "sonner"
+
 
 const AddUser = ({ open, setOpen, userData }) => {
 
   let defaultValues = userData ?? {};
   const { user } = useSelector((state) => state.auth);
 
-  const isLoading = false,
-    isUpdating = false;
+   const [addNewUser, {isLoading}]=useRegisterMutation();
 
   const {
     register,
@@ -21,7 +23,22 @@ const AddUser = ({ open, setOpen, userData }) => {
     formState: { errors },
   } = useForm({ defaultValues });
 
-  const handleOnSubmit = () => {};
+  const handleOnSubmit = async(data) => {
+    try {
+       
+      if(userData){
+
+      }else{
+      const result=await addNewUser({...data, password: data.email}).unwrap();
+        
+      toast.success("New user added succesfully")
+      
+      }
+ 
+    } catch (error) {
+      toast.error("something went wrong")
+    }
+  };
 
   return (
     <>
@@ -81,7 +98,7 @@ const AddUser = ({ open, setOpen, userData }) => {
             />
           </div>
 
-          {isLoading || isUpdating ? (
+          {isLoading  ? (
             <div className='py-5'>
               <Loading />
             </div>
@@ -92,13 +109,14 @@ const AddUser = ({ open, setOpen, userData }) => {
                 className='bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto'
                 label='Submit'
               />
-
+            {isLoading ? <Loading/> : 
               <Button
                 type='button'
                 className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
                 onClick={() => setOpen(false)}
                 label='Cancel'
               />
+            }
             </div>
           )}
         </form>

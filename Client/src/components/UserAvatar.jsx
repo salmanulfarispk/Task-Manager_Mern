@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { getInitials } from "../utils/index"
 import { FaUserLock } from "react-icons/fa";
 import { HiOutlineLogout } from "react-icons/hi";
-
+import { useLogoutMutation } from '../redux/slices/api/authApiSlice';
+import { logout} from '../redux/slices/authSlice';
+import {toast} from "sonner"
 
 
 
@@ -17,10 +19,21 @@ const UserAvatar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [logoutuser]=useLogoutMutation()
+  
 
+    const logouthandler = async() => {
+        try {
+        const result=await logoutuser().unwrap();
+          
+        dispatch(logout(result))
+         navigate("/login")
+            
+        } catch (error) {
+            console.log(error);
+            toast.error("Something went wrong!")
+        }
 
-    const logouthandler = () => {
-        console.log("Logout success!");
     };
 
     return (
