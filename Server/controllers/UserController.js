@@ -261,6 +261,10 @@ export const ActivateteUsers=async(req,res)=>{
         const {id}=req.params;
         const { isActive } = req.body;
 
+        if (typeof isActive !== 'boolean') {
+            return res.status(400).json({ status: false, message: "isActive field is required and must be a boolean" });
+          }
+          
         const user=await User.findById(id)
 
         if(user){
