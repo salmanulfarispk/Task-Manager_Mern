@@ -7,6 +7,7 @@ import { getInitials } from "../utils/index";
 import clsx from "clsx";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
 import AddUser from "../components/AddUser"
+import { useGetTeamListQuery } from '../redux/slices/api/userApiSlice';
 
 
 const Users = () => {
@@ -16,7 +17,8 @@ const Users = () => {
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
 
-
+  const {data, isLoading } = useGetTeamListQuery()
+   console.log(data);
 
   const userActionHandler = () => {};
   const deleteHandler = () => {};
@@ -118,7 +120,7 @@ const Users = () => {
             <table className='w-full mb-5'>
               <TableHeader />
               <tbody>
-                {summary.users?.map((user, index) => (
+                { data?.map((user, index) => (
                   <TableRow key={index} user={user} />
                 ))}
               </tbody>

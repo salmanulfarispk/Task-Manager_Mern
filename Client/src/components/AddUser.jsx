@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalWrapper from "./ModalWrapper ";
 import { Dialog } from "@headlessui/react";
 import Textbox from "./Textbox";
@@ -8,7 +8,8 @@ import Loading from "./Loading";
 import Button from "./Button";
 import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
 import {toast} from "sonner"
-
+import { useUpdateUserMutation } from "../redux/slices/api/userApiSlice";
+import {setCredentials} from "../redux/slices/authSlice"
 
 const AddUser = ({ open, setOpen, userData }) => {
 
@@ -16,6 +17,8 @@ const AddUser = ({ open, setOpen, userData }) => {
   const { user } = useSelector((state) => state.auth);
 
    const [addNewUser, {isLoading}]=useRegisterMutation();
+   const [updateUser, {isLoading: isUpdating}]=useUpdateUserMutation();
+   const dispatch=useDispatch()
 
   const {
     register,
@@ -27,13 +30,15 @@ const AddUser = ({ open, setOpen, userData }) => {
     try {
        
       if(userData){
-
       }else{
       const result=await addNewUser({...data, password: data.email}).unwrap();
         
       toast.success("New user added succesfully")
       
       }
+      setTimeout(()=>{
+         setOpen(false)
+      },1500)
  
     } catch (error) {
       toast.error("something went wrong")
@@ -98,7 +103,7 @@ const AddUser = ({ open, setOpen, userData }) => {
             />
           </div>
 
-          {isLoading  ? (
+          {isLoading || isUpdating ? (
             <div className='py-5'>
               <Loading />
             </div>

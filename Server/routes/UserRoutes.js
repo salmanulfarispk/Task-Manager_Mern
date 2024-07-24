@@ -10,8 +10,8 @@ router
 .post("/logout",Logout)
 
 
-.get("getAllteamlist",ProtectRoute,isAdminRoute,getTeamList)  //only works for Admin
-.get("getNotification",ProtectRoute,getNotification)
+.get("/getteamlist",ProtectRoute,isAdminRoute,getTeamList)  //only works for Admin
+.get("/getNotification",ProtectRoute,getNotification)
 .put("/updateProfile",ProtectRoute,updateUserProfile)
 .put("/mark-as-read",ProtectRoute,MarkAsNotification)
 .patch("/change-Password",ProtectRoute,ChangePassword)
