@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { IoMenu } from "react-icons/io5";
 import { setOpenSidebar } from '../redux/slices/authSlice';
 import { MdOutlineSearch } from "react-icons/md";
@@ -8,9 +8,9 @@ import NotificationPanel from './NotificationPanel';
 
 const Navbar = () => {
 
-  const {user}=useSelector((state)=> state.auth)
 
    const dispatch=useDispatch()
+   
 
 
   return (

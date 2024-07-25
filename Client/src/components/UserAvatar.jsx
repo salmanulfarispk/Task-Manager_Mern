@@ -9,6 +9,7 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { useLogoutMutation } from '../redux/slices/api/authApiSlice';
 import { logout} from '../redux/slices/authSlice';
 import {toast} from "sonner"
+import ChangePassword from './ChangePassword';
 
 
 
@@ -97,6 +98,8 @@ const UserAvatar = () => {
                     </Transition>
                 </Menu>
             </div>
+
+           <ChangePassword open={openPassword} setOpen={setOpenPassword}/>
 
         </>
     );
