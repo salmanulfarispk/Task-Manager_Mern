@@ -30,8 +30,15 @@ const AddUser = ({ open, setOpen, userData }) => {
     try {
        
       if(userData){
+        const result=await updateUser(data).unwrap();
+
+        toast.success(result?.message);
+        if(userData?._id === user > _id){
+          dispatch(setCredentials(...result.user))
+        }
+
       }else{
-      const result=await addNewUser({...data, password: data.email}).unwrap();
+      await addNewUser({...data, password: data.email}).unwrap();
         
       toast.success("New user added succesfully")
       
@@ -39,6 +46,7 @@ const AddUser = ({ open, setOpen, userData }) => {
       setTimeout(()=>{
          setOpen(false)
       },1500)
+      
  
     } catch (error) {
       toast.error("something went wrong")

@@ -35,6 +35,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         query: (data)=> ({
             url: `${USER_URL}/${data.id}`,
             method: 'PATCH',
+            body: data,
             credentials: 'include',
         })
     }),
