@@ -8,7 +8,7 @@ import Loading from "./Loading";
 import Button from "./Button";
 import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
 import {toast} from "sonner"
-import { useUpdateUserMutation } from "../redux/slices/api/userApiSlice";
+import { useGetTeamListQuery, useUpdateUserMutation } from "../redux/slices/api/userApiSlice";
 import {setCredentials} from "../redux/slices/authSlice"
 
 const AddUser = ({ open, setOpen, userData }) => {
@@ -18,6 +18,8 @@ const AddUser = ({ open, setOpen, userData }) => {
 
    const [addNewUser, {isLoading}]=useRegisterMutation();
    const [updateUser, {isLoading: isUpdating}]=useUpdateUserMutation();
+  const {refetch : refetchUsers } = useGetTeamListQuery();
+
    const dispatch=useDispatch()
 
   const {
@@ -43,6 +45,8 @@ const AddUser = ({ open, setOpen, userData }) => {
       toast.success("New user added succesfully")
       
       }
+
+      refetchUsers();
       setTimeout(()=>{
          setOpen(false)
       },1500)

@@ -30,13 +30,12 @@ const Users = () => {
           id: selected?._id
         });
 
-        console.log(result)
-
         if (result.error) {
           throw new Error(result.error.data.message);
         }
 
         refetch();
+        
         toast.success(result.data.message);
         setSelected(null);
         setTimeout(() => {
