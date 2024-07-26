@@ -7,12 +7,17 @@ import UserList from "./UserList";
 import SelectList from "../SelectList";
 import { BiImages } from "react-icons/bi";
 import Button from "../Button";
+import UploadFile from "../../utils/UploadFile"
+import { useCreateTaskMutation, useGetAllTasksQuery, useUpdateTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import {toast} from "sonner"
+
+
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
-const AddTask = ({ open, setOpen }) => {
-  const task = "";
+const AddTask = ({ open, setOpen, task,refetch }) => {
+ 
 
   const {
     register,
@@ -27,12 +32,63 @@ const AddTask = ({ open, setOpen }) => {
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const submitHandler = () => {};
+  const [createTask, {isLoading}]=useCreateTaskMutation()
+  const [updateTask, {isLoading: isUpdating }]=useUpdateTaskMutation();
+  const URLs= task?.assets ? [...task.assets] : [] ;
 
-  const handleSelect = (e) => {
-    setAssets(e.target.files);
+
+  const submitHandler = async(data) => {
+
+       const uploadFileURLs=[];
+
+      for(const file of assets){
+         setUploading(true)
+         try {
+           const url= await UploadFile(file)
+            uploadFileURLs.push(url)
+
+         } catch (error) {
+           console.log("Error uploading file:", error.message);
+           return;
+         }finally{
+            setUploading(false)
+         }
+      }
+
+        try {
+
+
+          const newData={
+            ...data,
+            assets: [...URLs, ...uploadFileURLs],
+            team,
+            stage,
+            priority,
+          };
+
+          const res= task?._id ?
+               await updateTask({...newData, _id: task?._id }).unwrap()  :
+               await createTask(newData).unwrap() && refetch() ;
+
+
+               toast.success(res.message)
+
+               setTimeout(()=>{
+                 setOpen(false)
+               },500)
+
+          
+        } catch (error) {
+          console.log(error);
+          toast.error(error?.data?.message || error.error)
+        }
   };
 
+  const handleSelect = (e) => {
+    setAssets(Array.from(e.target.files));
+  };
+
+  
     
   return (
     <ModalWrapper open={open} setOpen={setOpen}>

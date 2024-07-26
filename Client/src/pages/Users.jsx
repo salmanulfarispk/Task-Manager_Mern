@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Title  from  "../components/Title";
 import Button from "../components/Button";
 import { IoMdAdd } from "react-icons/io";
-import { summary } from "../assets/datas";
 import { getInitials } from "../utils/index";
 import clsx from "clsx";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";

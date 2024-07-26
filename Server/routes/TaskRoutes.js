@@ -18,11 +18,11 @@ router.get("/",ProtectRoute,getTaskss)
 router.get("/:id",ProtectRoute,getTask)
 
 router.post("/create-subtask/:id",ProtectRoute,isAdminRoute,CreateSubTask)
-router.put("update-task/:id",ProtectRoute,isAdminRoute,UpdateTask)
+router.put("/update-task/:id",ProtectRoute,isAdminRoute,UpdateTask)
 router.patch("/:id",ProtectRoute,isAdminRoute,trashTask)
 
 router.delete("/delete-restore/:id?",ProtectRoute,isAdminRoute,deleteRestore)
-                            //here id is optional ,if id is avilable so we can delete or restore ,cant delete all or restore all ,
+                            //here id is optional ,if id is avilable so we can delete or restore ,cant deleteall or restoreall ,
                             //so id is option witout id we can delete all and restoreall
                            
 
