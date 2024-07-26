@@ -157,7 +157,7 @@ export const DashboardStatics = async (req, res) => {
                 select: "name role title email"
             }).sort({ _id: -1 })      //most recently created tasks will be listed first.
 
-            : //false, other user
+            :      //false,means other user
 
             await Task.find({
                 isTrashed: false,
@@ -214,7 +214,7 @@ export const DashboardStatics = async (req, res) => {
             last10Tasks,
             users: isAdmin ? users : [],    //only admin can see the last 10 active list of users, 
             tasks: groupTasks,
-            grapgdata: groupedData
+            graphdata: groupedData
         }
 
         res.status(200).json({
