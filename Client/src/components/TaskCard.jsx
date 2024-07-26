@@ -48,7 +48,7 @@ const TaskCard = ({task}) => {
             <span className='uppercase'>{task?.priority} Priority</span>
           </div>
 
-          {user?.isAdmin && <TaskDialog task={task} />}
+          {user?.isAdmin && <TaskDialog task={task} />} 
         </div>
 
         <>
@@ -131,7 +131,7 @@ const TaskCard = ({task}) => {
         </div>
       </div>
 
-      <AddSubTasks open={open} setOpen={setOpen} id={task._id} />
+      <AddSubTasks open={open} setOpen={setOpen} id={task?._id} />
 
    
     </>

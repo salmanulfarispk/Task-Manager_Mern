@@ -9,6 +9,8 @@ import { Menu, Transition } from "@headlessui/react";
 import AddTask from "./AddTask";
 import AddSubTask from "./AddSubTasks";
 import ConfirmatioDialog from "../Dialogs";
+import { useDuplicateTaskMutation, useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import { toast } from "sonner";
 
 const TaskDialog = ({ task }) => {
     
@@ -17,10 +19,51 @@ const TaskDialog = ({ task }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const navigate = useNavigate();
+  const [duplicateTask]=useDuplicateTaskMutation()
+  const [deleteTask]=useTrashTaskMutation()
 
-  const duplicateHandler = () => {};
-  const deleteClicks = () => {};
-  const deleteHandler = () => {};
+  const duplicateHandler = async() => {
+    try {
+
+      const res=await duplicateTask(task._id).unwrap();
+
+      toast.success(res?.message)
+
+      setTimeout(()=>{
+        setOpenDialog(false)
+        window.location.reload();
+      },500)
+     
+      
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error.error )
+    }
+  };
+
+  const deleteClicks = () => {
+    setOpenDialog(true)
+  };
+
+  const deleteHandler = async() => {
+      try {
+        const res= await deleteTask({
+          id: task._id,
+          isTrashed: "trash"
+        }).unwrap()
+
+         toast.success(res?.message)
+
+         setTimeout(()=>{
+           setOpenDialog(false)
+           window.location.reload();
+         },500)
+        
+      } catch (error) {
+        console.log(error);
+        toast.error(error?.data?.message || error.error )
+      }
+  };
 
   const items = [
     {
@@ -111,7 +154,7 @@ const TaskDialog = ({ task }) => {
         key={new Date().getTime()}
       />
 
-      <AddSubTask open={open} setOpen={setOpen} />
+      <AddSubTask open={open} setOpen={setOpen} id={task?._id} />
 
       <ConfirmatioDialog
         open={openDialog}

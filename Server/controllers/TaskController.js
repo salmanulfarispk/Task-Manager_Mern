@@ -298,6 +298,8 @@ export const CreateSubTask = async (req, res) => {
         const { title, date, tag } = req.body;
         const { id } = req.params;
 
+        console.log(id);
+
 
         const newSubTask = {
             title,

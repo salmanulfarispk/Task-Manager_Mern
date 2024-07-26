@@ -17,7 +17,7 @@ router.get("/dashboard",ProtectRoute,DashboardStatics)
 router.get("/",ProtectRoute,getTaskss)
 router.get("/:id",ProtectRoute,getTask)
 
-router.post("/create-subtask/:id",ProtectRoute,isAdminRoute,CreateSubTask)
+router.put("/create-subtask/:id",ProtectRoute,isAdminRoute,CreateSubTask)
 router.put("/update-task/:id",ProtectRoute,isAdminRoute,UpdateTask)
 router.patch("/:id",ProtectRoute,isAdminRoute,trashTask)
 
