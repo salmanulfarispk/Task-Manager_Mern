@@ -126,8 +126,7 @@ const NotificationPanel = () => {
         </Popover.Panel>
       </Transition>
     </Popover>
-
-    <viewNotification open={open} setOpen={setOpen} el={selected}/>
+    
   </>
   )
 }
