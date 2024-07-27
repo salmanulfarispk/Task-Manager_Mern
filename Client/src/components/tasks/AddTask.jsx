@@ -17,7 +17,7 @@ import { dateFormatter } from "../../utils";
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
-const AddTask = ({ open, setOpen, task,refetch }) => {
+const AddTask = ({ open, setOpen, task, refetch }) => {
   
   const defaultValues={
      title: task?.title || "",
@@ -81,7 +81,11 @@ const AddTask = ({ open, setOpen, task,refetch }) => {
                await createTask(newData).unwrap() && refetch() ;
 
 
-               toast.success(res.message)
+               toast.success(task?._id ? "Updated successfully" : "Created successfully");
+
+               if (!task?._id) {
+                 refetch();
+               }
 
                setTimeout(()=>{
                  setOpen(false)
@@ -98,7 +102,7 @@ const AddTask = ({ open, setOpen, task,refetch }) => {
     setAssets(Array.from(e.target.files));
   };
 
-  
+   
     
   return (
     <ModalWrapper open={open} setOpen={setOpen}>
@@ -107,7 +111,7 @@ const AddTask = ({ open, setOpen, task,refetch }) => {
           as='h2'
           className='text-base font-bold leading-6 text-gray-900 mb-4'
         >
-          {task ? "UPDATE TASK" : "ADD TASK"}
+          {task?._id ? "UPDATE TASK" : "ADD TASK"}
         </Dialog.Title>
 
         <div className='mt-2 flex flex-col gap-6'>

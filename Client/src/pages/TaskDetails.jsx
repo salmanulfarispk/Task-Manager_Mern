@@ -89,6 +89,8 @@ const act_types = [
 const TaskDetails = () => {
   const { id } = useParams();
 
+  
+
   const [selected, setSelected] = useState(0);
   const task = tasks[3];
 
