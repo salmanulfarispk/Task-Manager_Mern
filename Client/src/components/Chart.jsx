@@ -12,6 +12,8 @@ import {
 
 
 const Chart = ({data}) => {
+
+  // console.log("chartdata",data);
   
   return (
     <ResponsiveContainer width={'100%'} height={300}>

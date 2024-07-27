@@ -28,7 +28,9 @@ const Table = ({ tasks }) => {
     setOpenDialog(true);
   };
 
-  const deleteHandler = () => {};
+  const deleteHandler = () => {
+    
+  };
 
   const TableHeader = () => (
     <thead className='w-full border-b border-gray-300'>

@@ -47,7 +47,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
         })
        }),
           trashTask: builder.mutation({
-          query: (id)=> ({
+          query: ({id})=> ({
           url: `${TASK_URL}/${id}`,
           method: 'PATCH',
           credentials: 'include',

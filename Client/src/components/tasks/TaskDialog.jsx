@@ -52,6 +52,8 @@ const TaskDialog = ({ task }) => {
           isTrashed: "trash"
         }).unwrap()
 
+        console.log(res);
+
          toast.success(res?.message)
 
          setTimeout(()=>{

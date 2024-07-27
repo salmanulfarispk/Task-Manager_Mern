@@ -196,14 +196,12 @@ export const DashboardStatics = async (req, res) => {
             allTasks.reduce((result, task) => {
                 const { priority } = task;
 
-                result[priority] = (result[priority] || 0) + 1;  //if result has already has a value ,then increment  one to that value,if no value then defalt as 0,then icrement with one
+                result[priority] = (result[priority] || 0) + 1;    //if result has already has a value ,then increment  one to that value,if no value then defalt as 0,then icrement with one
                 return result;
             }, {})
-        ).map(([name, total]) => {
-            {
-                name, total                  //[ { },{},....] looklike this
-            }
-        })
+        ).map(([name, total])=> ({name, total }))
+
+          
 
         //calculate total taks
         const totalTasks = allTasks?.length;
@@ -297,9 +295,6 @@ export const CreateSubTask = async (req, res) => {
 
         const { title, date, tag } = req.body;
         const { id } = req.params;
-
-        console.log(id);
-
 
         const newSubTask = {
             title,
