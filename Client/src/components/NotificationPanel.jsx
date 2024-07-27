@@ -30,6 +30,7 @@ const NotificationPanel = () => {
 
 
   const readHandler = async(type,id) => {
+    
     await markasRead({type,id}).unwrap();
 
     refetch();

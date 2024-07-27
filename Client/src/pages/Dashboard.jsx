@@ -21,6 +21,9 @@ import Loading from "../components/Loading"
 
 
 const TaskTable = ({ tasks }) => {
+
+     console.log(tasks);
+
   const ICONS = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
@@ -185,6 +188,7 @@ const UserTable = ({ users }) => {
 const Dashboard = () => {
 
   const {data, isLoading}=useGetDashboardStatsQuery()
+ 
 
   if(isLoading){
     return(
@@ -318,7 +322,7 @@ const Dashboard = () => {
       <div className="w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8">
 
          {/**left */}
-        <TaskTable tasks={data?.last10Task}/> 
+        <TaskTable tasks={data?.last10Tasks}/> 
 
          {/**right */}
           <UserTable users={data?.users}/>   
