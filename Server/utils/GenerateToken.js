@@ -10,7 +10,7 @@ export const createJWT = (res,userId)=>{
      res.cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development", //now false ,only true when in productions or test
-        sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+        sameSite: "none",
         maxAge: 1 * 24 * 60 * 60 * 1000, //1 day
      })
 
