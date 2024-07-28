@@ -37,7 +37,8 @@ export const createTask = async (req, res) => {
             priority: priority.toLowerCase(),
             assets,
             activities: activity
-        })
+        });
+
 
         await task.save();
 
@@ -231,7 +232,7 @@ export const DashboardStatics = async (req, res) => {
 
 export const getTaskss = async (req, res) => {
     try {
-
+     
         const { stage, isTrashed } = req.query;
 
         let query = { isTrashed: isTrashed ? true : false };
