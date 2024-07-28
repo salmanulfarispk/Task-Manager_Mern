@@ -18,7 +18,7 @@ const PORT= process.env.PORT || 5000
 const app=express()
 
 app.use(cors({
-    origin: ['http://localhost:3009',"http://localhost:3000","https://taskdone-pk.netlify.app"],
+    origin: ["https://taskdone-pk.netlify.app","http://localhost:3009","http://localhost:3000"],
     methods: ["GET","POST","PUT","DELETE","PATCH"],
     credentials: true,
 }))
