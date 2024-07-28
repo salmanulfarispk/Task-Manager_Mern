@@ -31,7 +31,7 @@ const TaskCard = ({task}) => {
 
     const { user } = useSelector((state) => state.auth);
     const [open, setOpen] = useState(false);
-
+     
       
   return (
     <>

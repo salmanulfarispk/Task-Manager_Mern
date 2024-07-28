@@ -7,12 +7,14 @@ import {
   MdKeyboardDoubleArrowUp,
   MdOutlineRestore,
 } from "react-icons/md";
-import { tasks } from "../assets/datas";
 import Title from "../components/Title";
 import Button from "../components/Button";
 import { PRIOTITYSTYELS, TASK_TYPE } from "../utils/index";
-// import AddUser from "../components/AddUser";
+import { toast } from "sonner"
 import ConfirmatioDialog from "../components/Dialogs";
+import { useDeleteRestoretaskMutation, useGetAllTasksQuery } from "../redux/slices/api/taskApiSlice";
+import Loading from "../components/Loading"
+
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -22,10 +24,52 @@ const ICONS = {
 
 const Trash = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [open, setOpen] = useState(false);
   const [msg, setMsg] = useState(null);
   const [type, setType] = useState("delete");
   const [selected, setSelected] = useState("");
+
+
+  const { data, isLoading, refetch } = useGetAllTasksQuery({
+    strQuery: "",
+    isTrashed: "true",
+    search: ""
+  });
+
+  const [deleteRestore] = useDeleteRestoretaskMutation()
+
+  const deleteRestoreHandler = async () => {
+    try {
+
+      let result;
+
+      switch (type) {
+        case "delete":
+            result = await deleteRestore({ id: selected, actionType: "delete" }).unwrap();
+            break;
+        case "deleteAll":
+            result = await deleteRestore({ actionType: "deleteAll" }).unwrap();
+            break;
+        case "restore":
+            result = await deleteRestore({ id: selected, actionType: "restore" }).unwrap();
+            break;
+        case "restoreAll":
+            result = await deleteRestore({ actionType: "restoreAll" }).unwrap();
+            break;
+        default:
+            throw new Error("Invalid action type");
+    }
+
+      toast.success(result?.message)
+      setTimeout(() => {
+        setOpenDialog(false);
+        refetch();
+      }, 500)
+
+    } catch (error) {
+      console.log("Login error:", error);
+      toast.error(error?.data?.message || error?.message)
+    }
+  }
 
   const deleteAllClick = () => {
     setType("deleteAll");
@@ -51,6 +95,15 @@ const Trash = () => {
     setMsg("Do you want to restore the selected item?");
     setOpenDialog(true);
   };
+
+
+  if (isLoading) {
+    return (
+      <div className="py-10">
+        <Loading />
+      </div>
+    )
+  }
 
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
@@ -129,7 +182,7 @@ const Trash = () => {
             <table className='w-full mb-5'>
               <TableHeader />
               <tbody>
-                {tasks?.map((tk, id) => (
+                {data?.tasks?.map((tk, id) => (
                   <TableRow key={id} item={tk} />
                 ))}
               </tbody>
@@ -138,7 +191,7 @@ const Trash = () => {
         </div>
       </div>
 
-   
+
 
       <ConfirmatioDialog
         open={openDialog}

@@ -89,6 +89,7 @@ const AddTask = ({ open, setOpen, task, refetch }) => {
 
                setTimeout(()=>{
                  setOpen(false)
+                  window.location.reload()  
                },500)
 
           

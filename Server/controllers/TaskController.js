@@ -386,28 +386,38 @@ export const deleteRestore = async (req, res) => {
         const { id } = req.params;
 
         const { actionType } = req.query;
+         
+        switch (actionType) {
+            case "delete":
+                if (!id) throw new Error("ID is required for delete action");
+                await Task.findByIdAndDelete(id);
+                break;
 
-        if (actionType === "delete") {
-            await Task.findByIdAndDelete(id)
-        } else if (actionType === "deleteAll") {
-            await Task.deleteMany({ isTrashed: true })
+            case "deleteAll":
+                await Task.deleteMany({ isTrashed: true });
+                break;
+
+            case "restore":
+                if (!id) throw new Error("ID is required for restore action");
+                const task = await Task.findById(id);
+                if (!task) throw new Error("Task not found");
+                task.isTrashed = false;
+                await task.save();
+                break;
+
+            case "restoreAll":
+                await Task.updateMany({ isTrashed: true }, { $set: { isTrashed: false } });
+                break;
+
+            default:
+                throw new Error("Invalid action type");
         }
-        else if (actionType === "restore") {
-            const resp = await Task.findById(id);
 
-            resp.isTrashed = false;
-            resp.save();
-        }
-
-        else if (actionType === "restoreAll") {
-            await Task.updateMany({ isTrashed: true }, { $set: { isTrashed: false } });
-        }
-
-
+          
         res.status(200).json({
-            status: true,
-            message: `All Operation performed successfully.`,
-        });
+        status: true,
+        message: `Operation '${actionType}' performed successfully.`,
+         }); 
 
     } catch (error) {
         console.log(error)

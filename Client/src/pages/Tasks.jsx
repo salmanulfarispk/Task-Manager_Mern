@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaList } from "react-icons/fa";
 import { MdGridView } from "react-icons/md";
 import { useParams } from 'react-router-dom';
@@ -12,6 +12,8 @@ import BoardView from '../components/BoardView';
 import AddTask from '../components/tasks/AddTask';
 import Table from "../components/tasks/Table";
 import { useGetAllTasksQuery } from '../redux/slices/api/taskApiSlice';
+import { useSelector } from 'react-redux';
+
 
 const TABS = [
   { title: "Board View", icon: <MdGridView /> },
@@ -25,6 +27,8 @@ const TASK_TYPE = {
 };
 
 const Tasks = () => {
+  
+  const { user } = useSelector((state) => state.auth);
   const params = useParams();
 
   const [selected, setSelected] = useState(0);
@@ -43,8 +47,11 @@ const Tasks = () => {
      isTrashed: "",
      search:""
    });
+
+    useEffect(()=>{
+      refetch();
+    },[status,refetch,data?.tasks])
      
-   
 
   return  isLoading ? (
     <div className='py-10'>
@@ -58,8 +65,9 @@ const Tasks = () => {
           <Button
             onClick={handleOpenModal}
             label='Create Task'
+            disabled={!user.isAdmin}
             icon={<IoMdAdd className='text-lg' />}
-            className='flex flex-row-reverse gap-1 items-center bg-blue-600 text-white rounded-md py-2 2xl:py-2.5'
+            className='flex flex-row-reverse gap-1 items-center bg-blue-600 text-white rounded-md py-2 2xl:py-2.5 disabled:hidden'
           />
         )}
       </div>
@@ -79,7 +87,7 @@ const Tasks = () => {
           <BoardView tasks={data?.tasks} />
         ) : (
           <div className='w-full'>
-            <Table tasks={data?.tasks} />
+            <Table tasks={data?.tasks}  />
           </div>
         )}
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   MdAdminPanelSettings,
   MdKeyboardArrowDown,
@@ -22,7 +22,6 @@ import Loading from "../components/Loading"
 
 const TaskTable = ({ tasks }) => {
 
-     console.log(tasks);
 
   const ICONS = {
     high: <MdKeyboardDoubleArrowUp />,
@@ -187,8 +186,11 @@ const UserTable = ({ users }) => {
 
 const Dashboard = () => {
 
-  const {data, isLoading}=useGetDashboardStatsQuery()
- 
+  const {data, isLoading ,refetch}=useGetDashboardStatsQuery()
+  
+    useEffect(()=>{
+       refetch();
+    },[data])
 
   if(isLoading){
     return(

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiMessageAltDetail } from "react-icons/bi";
 import {
   MdAttachFile,
@@ -15,6 +15,7 @@ import ConfirmatioDialog from "../Dialogs";
 import { useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { toast } from "sonner";
 import AddTask from "./AddTask";
+import { useSelector } from "react-redux";
 
 
 const ICONS = {
@@ -27,8 +28,8 @@ const Table = ({ tasks }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
-   
-  
+
+  const { user } = useSelector((state) => state.auth);
 
   const [trashTask]=useTrashTaskMutation()
 
@@ -76,7 +77,7 @@ const Table = ({ tasks }) => {
     </thead>
   );
 
-  const TableRow = ({ task }) => (
+  const TableRow = ({ task }) =>(
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-300/10'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
@@ -138,19 +139,22 @@ const Table = ({ tasks }) => {
           ))}
         </div>
       </td>
-
+      
+      
       <td className='py-2 flex gap-2 md:gap-4 justify-end'>
         <Button
-          className='text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base'
+          className='text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base  disabled:hidden'
           label='Edit'
           type='button'
+          disabled={!user?.isAdmin}
           onClick={() => editTaskHandler(task)}
         />
 
         <Button
-          className='text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base'
+          className='text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base disabled:hidden'
           label='Delete'
           type='button'
+          disabled={!user?.isAdmin}
           onClick={() => deleteClicks(task._id)}
         />
       </td>

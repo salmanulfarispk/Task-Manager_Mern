@@ -50,9 +50,7 @@ const TaskDialog = ({ task }) => {
         const res= await deleteTask({
           id: task._id,
           isTrashed: "trash"
-        }).unwrap()
-
-        console.log(res);
+        }).unwrap();
 
          toast.success(res?.message)
 
